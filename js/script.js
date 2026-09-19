@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   setActiveNavLink();
   setupMobileMenu();
   setupContactForm();
+  setupDropdownMenus();
 });
 
 /**
@@ -49,6 +50,69 @@ function setupMobileMenu() {
       toggle.classList.remove("open");
       navLinks.classList.remove("open");
       toggle.setAttribute("aria-expanded", "false");
+    });
+  });
+}
+
+/**
+ * Handles all dropdown menus in the navbar.
+ * - Click the button to open/close the dropdown.
+ * - Click anywhere outside to close it.
+ * - Arrow flips direction to show open/closed state.
+ */
+function setupDropdownMenus() {
+  const dropdowns = document.querySelectorAll(".dropdown");
+
+  dropdowns.forEach(function (dropdown) {
+    const button = dropdown.querySelector(".dropdown-btn");
+    const menu = dropdown.querySelector(".dropdown-menu");
+
+    if (!button || !menu) return;
+
+    button.addEventListener("click", function (e) {
+      e.stopPropagation();
+      const isOpen = menu.classList.contains("show");
+
+      dropdowns.forEach(function (otherDropdown) {
+        const otherButton = otherDropdown.querySelector(".dropdown-btn");
+        const otherMenu = otherDropdown.querySelector(".dropdown-menu");
+
+        if (otherButton && otherMenu) {
+          otherMenu.classList.remove("show");
+          otherButton.classList.remove("open");
+          otherButton.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      if (!isOpen) {
+        menu.classList.add("show");
+        button.classList.add("open");
+        button.setAttribute("aria-expanded", "true");
+      }
+    });
+
+    menu.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        menu.classList.remove("show");
+        button.classList.remove("open");
+        button.setAttribute("aria-expanded", "false");
+      });
+    });
+  });
+
+  document.addEventListener("click", function (e) {
+    dropdowns.forEach(function (dropdown) {
+      const button = dropdown.querySelector(".dropdown-btn");
+      const menu = dropdown.querySelector(".dropdown-menu");
+
+      if (!button || !menu) return;
+      const clickedInside = dropdown.contains(e.target);
+
+      if (!clickedInside && menu.classList.contains("show")) {
+        menu.classList.remove("show");
+        button.classList.remove("open");
+        button.setAttribute("aria-expanded", "false");
+      }
     });
   });
 }
