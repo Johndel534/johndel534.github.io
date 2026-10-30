@@ -345,7 +345,7 @@ main { padding-top: var(--nav-height); min-height: 100vh; }
    Hero (Home)
    ========================================================= */
 .hero {
-  padding: 96px 0 72px;
+  padding-block: 96px 72px;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 56px;
@@ -468,7 +468,8 @@ main { padding-top: var(--nav-height); min-height: 100vh; }
 /* =========================================================
    Section shell
    ========================================================= */
-.section { padding: 72px 0; }
+/* padding-block only: the original `padding: 72px 0` wiped out .container's side gutters */
+.section { padding-block: 72px; }
 .section-head { margin-bottom: 44px; max-width: 60ch; }
 .section-head h2 { font-size: clamp(24px, 3vw, 32px); margin: 12px 0 14px; }
 .section-head p { color: var(--text-muted); }
@@ -901,3 +902,36 @@ main { padding-top: var(--nav-height); min-height: 100vh; }
   .hero-title .cursor { animation: none; }
   * { scroll-behavior: auto !important; }
 }
+
+/* =========================================================
+   React port additions
+   ========================================================= */
+.hero-visual .avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.nav-links a:focus-visible,
+.dropdown-btn:focus-visible,
+.nav-toggle:focus-visible,
+.btn:focus-visible,
+.project-link:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+.btn-row.spaced { margin-top: 18px; }
+.eyebrow.spaced { margin-top: 30px; }
+button.btn { cursor: pointer; }
+
+/* Mobile menu polish: opaque panel, full-width link rows */
+@media (max-width: 720px) {
+  .nav-links { background: rgb(15, 10, 26); }
+  .nav-links > li > a { display: block; }
+}
+
+/* Contact cards: label stacked above value (spans were inline in the original) */
+.contact-method .label,
+.contact-method .value { display: block; }
